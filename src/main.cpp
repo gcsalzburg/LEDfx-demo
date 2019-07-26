@@ -4,25 +4,24 @@
 // Declare pin defs
 #define LED_PIN 14
 #define NUM_LEDS 72
-#define NUM_STRIPS 4
 
 // Create array of LED colour data
-CRGB leds[NUM_LEDS*NUM_STRIPS];
+CRGB leds[NUM_LEDS];
 
 // Create panel for animation
-LEDfx::panel my_strip(leds, 20,30);
+LEDfx::panel my_strip(leds, NUM_LEDS);
 
 // Create a few effects
 LEDfx::effect swipe_col1(LEDfx::SWIPE, CRGB::Green, CRGB::Blue);
-LEDfx::effect swipe_col2(LEDfx::SWIPE, CRGB::Blue, CRGB::Red);
-LEDfx::effect swipe_col3(LEDfx::SWIPE, CRGB::Red, CRGB::Green);
+LEDfx::effect swipe_col2(LEDfx::SWIPE, CRGB::Blue, CRGB::Green);
 
 LEDfx::step steps[] = {
 	{my_strip, swipe_col1, 1000},
 	{my_strip, swipe_col2, 1000},
-	{my_strip, swipe_col3, 1000}
+	{my_strip, swipe_col1, 300},
+	{my_strip, swipe_col2, 300}
 };
-LEDfx::animation my_animation(steps, 3);
+LEDfx::animation my_animation(steps, 4);
 
 
 void setup() {
