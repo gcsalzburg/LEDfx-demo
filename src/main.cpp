@@ -27,8 +27,6 @@ LEDfx::animation my_animation(steps, 4);
 void setup() {
 	Serial.begin(115200);
 
-	my_strip.fill(CRGB::Black);
-
 	// Setup LEDs using Parallel Output method
 	FastLED.addLeds<NEOPIXEL,LED_PIN>(leds, NUM_LEDS);
 	FastLED.setBrightness(120); // 255 = full brightness
