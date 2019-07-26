@@ -8,25 +8,24 @@
 #pragma GCC diagnostic pop							// turn the warnings back on
 #include <LEDfx.h>
 
+// Declare pin defs
+#define LED_PIN 14
 #define NUM_LEDS 72
 #define NUM_STRIPS 4
 
+// Create array of LED colour data
 CRGB leds[NUM_LEDS*NUM_STRIPS];
 
-LEDfx::panel my_strip(leds, NUM_LEDS, LEDfx::BLUE_WIRES, NUM_LEDS);
+// Create panel for animation
+LEDfx::panel my_strip(leds, NUM_LEDS);
 
 void setup() {
 
-	// Setup LEDs using Parallel Output method
-	FastLED.addLeds<WS2811_PORTDC,NUM_STRIPS>(leds, NUM_LEDS);
-	FastLED.setBrightness(120); // 255 = full brightness
+	my_strip.fill(CRGB::Black);
 
-	// Turn off all LEDs
-	for(int i = 0; i < NUM_STRIPS; i++) {
-		for(int j = 0; j < NUM_LEDS; j++) {
-			leds[(i*NUM_LEDS) + j] = CRGB::Black;
-		}
-	}
+	// Setup LEDs using Parallel Output method
+	FastLED.addLeds<NEOPIXEL,LED_PIN>(leds, NUM_LEDS);
+	FastLED.setBrightness(120); // 255 = full brightness
 	FastLED.show();
 }
 
