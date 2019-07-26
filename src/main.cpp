@@ -1,11 +1,4 @@
 #include <Arduino.h>
-
-// Use #pragma here to stop warning messages from FastLED unused variable in the library
-#define FASTLED_INTERNAL // Disable #pragma message from FastLED
-#pragma GCC diagnostic push 						// save diagnostic state
-#pragma GCC diagnostic ignored "-Wunused-variable"	// turn off the specific warning. Can also use "-Wall"
-#include <FastLED.h>
-#pragma GCC diagnostic pop							// turn the warnings back on
 #include <LEDfx.h>
 
 // Declare pin defs
@@ -17,9 +10,23 @@
 CRGB leds[NUM_LEDS*NUM_STRIPS];
 
 // Create panel for animation
-LEDfx::panel my_strip(leds, NUM_LEDS);
+LEDfx::panel my_strip(leds, 20,30);
+
+// Create a few effects
+LEDfx::effect swipe_col1(LEDfx::SWIPE, CRGB::Green, CRGB::Blue);
+LEDfx::effect swipe_col2(LEDfx::SWIPE, CRGB::Blue, CRGB::Red);
+LEDfx::effect swipe_col3(LEDfx::SWIPE, CRGB::Red, CRGB::Green);
+
+LEDfx::step steps[] = {
+	{my_strip, swipe_col1, 1000},
+	{my_strip, swipe_col2, 1000},
+	{my_strip, swipe_col3, 1000}
+};
+LEDfx::animation my_animation(steps, 3);
+
 
 void setup() {
+	Serial.begin(115200);
 
 	my_strip.fill(CRGB::Black);
 
@@ -27,11 +34,11 @@ void setup() {
 	FastLED.addLeds<NEOPIXEL,LED_PIN>(leds, NUM_LEDS);
 	FastLED.setBrightness(120); // 255 = full brightness
 	FastLED.show();
+
+	my_animation.start();
 }
 
 void loop() {
-	// put your main code here, to run repeatedly:
-
-	my_strip.fill(CRGB::Blue);
+	my_animation.draw();
 	FastLED.show();
 }
